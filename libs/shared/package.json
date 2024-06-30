@@ -1,0 +1,13 @@
+{
+  "name": "netflix-shared",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/graphql": "^12.0.11",
+    "@prisma/client": "^5.15.0",
+    "class-validator": "^0.14.0"
+  }
+}

@@ -1,0 +1,94 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PaymentIntentResponse {
+  clientSecret: String!
+}
+
+type User {
+  id: Int!
+  email: String
+  password: String!
+  subscriptionId: String!
+  name: String!
+  surname: String!
+  resetPasswordToken: String
+  userName: String
+  customerId: String!
+  stripeSubscriptionId: String!
+  accessToken: String
+}
+
+type UserInfoResponse {
+  status: String!
+}
+
+type CheckUserEmailResponse {
+  isExistingUser: Boolean!
+}
+
+type CreateSubscriptionResult {
+  accessToken: String!
+  clientSecret: String!
+}
+
+type CommonResponse {
+  status: String!
+  message: String!
+}
+
+type Query {
+  getUsers: [User!]!
+  getUser(id: Float!): User!
+  checkUserWithEmail(email: String!): CheckUserEmailResponse!
+  authMe: User
+}
+
+type Mutation {
+  paymentIntent(amount: Float!): PaymentIntentResponse!
+  createUser(user: CreateUserInput!): String!
+  refreshTokens: String
+  getInviteLink(userId: Float!): String!
+  resetPassword(user: ResetPasswordInput!): UserInfoResponse!
+  updateUser(user: CreateUserInput!): UserInfoResponse!
+  createSubscription(subscription: CreateSubscriptionInput!): CreateSubscriptionResult!
+  addNewMember(member: INewMemberInput!): CommonResponse!
+  generateInviteLink: String!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  surname: String!
+  password: String!
+  customerId: String!
+}
+
+input ResetPasswordInput {
+  email: String!
+  password: String!
+  resetPasswordToken: String!
+}
+
+input CreateSubscriptionInput {
+  type: String!
+  price: Int!
+  paymentMethod: String
+  user: UserType
+  inviteCode: String
+}
+
+input UserType {
+  email: String!
+  name: String
+  surname: String
+  userName: String
+  password: String!
+}
+
+input INewMemberInput {
+  email: String!
+  name: String!
+  invitedUserEmail: String!
+}

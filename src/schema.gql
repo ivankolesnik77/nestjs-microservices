@@ -1,0 +1,65 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int!
+  email: String
+  password: String!
+  subscriptionId: String!
+  name: String!
+  surname: String!
+  resetPasswordToken: String
+  userName: String
+  customerId: String!
+  stripeSubscriptionId: String!
+  accessToken: String
+}
+
+type UserInfoResponse {
+  status: String!
+}
+
+type AuthResponse {
+  user: User
+  error: String
+}
+
+type CheckUserEmailResponse {
+  isExistingUser: Boolean!
+}
+
+type Query {
+  getUsers: [User!]!
+  getUser(id: Float!): User!
+  checkUserWithEmail(email: String!): CheckUserEmailResponse!
+  authUser(user: AuthUserInput!): AuthResponse
+  authMe: User
+}
+
+input AuthUserInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  createUser(user: CreateUserInput!): String!
+  refreshTokens: String
+  getInviteLink(userId: Float!): String!
+  resetPassword(user: ResetPasswordInput!): UserInfoResponse!
+  updateUser(user: CreateUserInput!): UserInfoResponse!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  surname: String!
+  password: String!
+  customerId: String!
+}
+
+input ResetPasswordInput {
+  email: String!
+  password: String!
+  resetPasswordToken: String!
+}

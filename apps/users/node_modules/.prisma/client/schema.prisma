@@ -1,0 +1,82 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int     @default(autoincrement()) @id
+  email String @unique
+  name  String?
+  surname String?
+  userName String?
+  orders   Order[]
+  subscription Subscription?  @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+  subscriptionId Int?
+  password String
+  customerId String
+  stripeSubscriptionId String ?
+  resetPasswordToken String ?
+  subscriptionStatus String?
+  refreshToken String?
+  isInviteLink Boolean ?
+}
+
+model Product {
+  id        Int      @default(autoincrement()) @id
+  title     String
+  category   String?
+  price      Int
+  orderItems  OrderItem[]
+}
+
+
+
+model Subscription {
+  id           Int      @id @default(autoincrement())
+  type         String
+  price        Float
+  expiredAt    DateTime
+  users        User[]
+}
+
+model Order {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  status    String
+  items     OrderItem[]
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id], onUpdate: Cascade)
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity Int
+}
+
+
+model InviteCode {
+  id        Int      @id @default(autoincrement())
+  userId   Int
+  hash String
+  expireAt DateTime
+}
+
+model Movie {
+  id        Int       @id @default(autoincrement())
+  title     String
+  genre     String
+  releaseYear Int
+  rating    Float
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  file      String
+}
