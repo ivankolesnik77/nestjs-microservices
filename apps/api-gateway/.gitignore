@@ -10,7 +10,9 @@ pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
+.env
+.env.development
+.env.staging
 # OS
 .DS_Store
 

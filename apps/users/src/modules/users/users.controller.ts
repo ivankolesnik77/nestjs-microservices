@@ -1,5 +1,5 @@
 import { Mutation, ObjectType, Query, Resolver, Args, Field, ResolveField, Parent, Context } from "@nestjs/graphql";
-import { Controller, NotFoundException, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { Controller, NotFoundException, Param, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { User } from "./user.entity";
 import { AuthUserInput, CreateUserInput, ResetPasswordInput } from "@shared/dtos/createUser.dto";
 
@@ -76,38 +76,18 @@ export class UsersController {
     }
   }
 
-  @MessagePattern({ cmd: "authMe" })
-  async authMe(@Context() context: any) {
-    const { req } = context;
-    const user = req.user;
-    console.log(req);
-
-    if (!user?.sub) {
-      return new UnauthorizedException(user.message);
-    }
-
-    const userResponse = await this.usersService.userBy({
-      id: user.sub,
-    });
+  @MessagePattern({ cmd: "userBy" })
+  async userBy(data: User) {
+    const userResponse = await this.usersService.userBy(data);
 
     return userResponse;
   }
 
   @MessagePattern({ cmd: "refreshTokens" })
-  async refreshTokens(@Context() context: any) {
-    const { req, res } = context;
-    const userId = req.user["sub"];
-
+  async refreshTokens(userId: string) {
     const tokens = await this.usersService.refreshTokens(userId);
 
-    if (tokens?.errors?.length) return tokens.errors[0];
-
-    res.cookie("refreshToken", tokens.refreshToken, {
-      maxAge: 900000,
-      httpOnly: true,
-    });
-
-    return tokens.accessToken;
+    return tokens;
   }
 
   @MessagePattern({ cmd: "getInviteLink" })

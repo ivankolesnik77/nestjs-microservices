@@ -11,6 +11,7 @@
     "start:dev": "ts-node-dev --require tsconfig-paths/register src/main.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.606.0",
     "@faker-js/faker": "^8.3.1",
     "@nestjs-modules/mailer": "^1.10.3",
     "@nestjs/apollo": "^12.0.11",

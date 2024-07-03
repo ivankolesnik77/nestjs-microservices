@@ -15,6 +15,14 @@ export class UserInfoResponse {
 }
 
 @ObjectType()
+export class RefreshTokensResponse {
+  @Field(() => String, { nullable: true })
+  error?: string;
+  @Field(() => String, { nullable: true })
+  accessToken?: string;
+}
+
+@ObjectType()
 export class AuthResponse {
   @Field(() => User, { nullable: true })
   user?: User;
@@ -109,7 +117,7 @@ export class UsersResolver {
     return userResponse;
   }
 
-  @Mutation((returns) => String, { nullable: true })
+  @Mutation((returns) => RefreshTokensResponse, { nullable: true })
   @UseGuards(RefreshTokenGuard)
   async refreshTokens(@Context() context: any) {
     const { req, res } = context;
@@ -117,14 +125,14 @@ export class UsersResolver {
 
     const tokens = await this.usersService.refreshTokens(userId);
 
-    if (tokens?.errors?.length) return tokens.errors[0];
+    if (tokens?.errors?.length) return { error: tokens.errors[0] };
 
     res.cookie("refreshToken", tokens.refreshToken, {
       maxAge: 900000,
       httpOnly: true,
     });
 
-    return tokens.accessToken;
+    return { accessToken: tokens.accessToken };
   }
 
   @Mutation((returns) => String)

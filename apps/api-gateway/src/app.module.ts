@@ -19,6 +19,7 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
 import { PrismaService } from "./modules/prisma/prisma.service";
 import { JwtModule } from "@nestjs/jwt";
 import { StripeService } from "./modules/stripe/stripe.service";
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { StripeService } from "./modules/stripe/stripe.service";
       context: ({ req, res }) => ({ req, res }),
     }),
     UsersModule,
+    MediaModule,
     // MediaModule,
   ],
   providers: [
